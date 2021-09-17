@@ -25,7 +25,7 @@ export default function Home(): JSX.Element {
   async function LoadImages({
     pageParam = null,
   }): Promise<ImagesQueryResponse> {
-    const { data } = await api.get('http://localhost:3000/api/images', {
+    const { data } = await api.get('api/images', {
       params: {
         after: pageParam,
       },
@@ -45,11 +45,7 @@ export default function Home(): JSX.Element {
   });
 
   const formattedData = useMemo(() => {
-    const formatted = data?.pages.flatMap(images => {
-      return images?.data.flat();
-    });
-
-    return formatted;
+    return data?.pages.map(result => result.data.map(images => images)).flat();
   }, [data]);
 
   if (isLoading) {
